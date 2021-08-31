@@ -1,4 +1,4 @@
-#include "Engine2d.h"
+#include "Rectangle.h"
 #include "Vector2d.h"
 #include "glfw3.h"
 
@@ -8,6 +8,7 @@ namespace Engine2d {
 		this->P[1] = Vector2d(x,y+height);
 		this->P[2] = Vector2d(x+width,y+height);
 		this->P[3] = Vector2d(x+width,y);
+		this->radius = std::sqrt(width*width + height*height) / 2;
 	}
 
 	void Rectangle::draw() {
@@ -29,5 +30,9 @@ namespace Engine2d {
 		glVertexPointer(2, GL_FLOAT, 0, lineVertices);
 		glDrawArrays(GL_LINES, 0, 8);
 		glDisableClientState(GL_VERTEX_ARRAY);
+	}
+
+	void applyForce(Vector2d F) {
+		
 	}
 }

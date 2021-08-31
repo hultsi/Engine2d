@@ -1,0 +1,4 @@
+.vscode
+glfw
+build
+main.cpp

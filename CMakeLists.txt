@@ -5,7 +5,9 @@ project(Engine2d)
 add_executable(${CMAKE_PROJECT_NAME} 
 	main.cpp
 	./src/Engine2d.cpp
+	./src/GameControl.cpp
 	./src/Rectangle.cpp
+	./src/Collision.cpp
 	./src/Vector2d.cpp
 )
 

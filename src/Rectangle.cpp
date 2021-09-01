@@ -1,17 +1,44 @@
+#include <string>
 #include "Rectangle.h"
 #include "Vector2d.h"
 #include "glfw3.h"
+#include <iostream>
 
 namespace Engine2d {
-	Rectangle::Rectangle(const float x, const float y, const float width, const float height) {
-		this->P[0] = Vector2d(x,y);
+	Rectangle::Rectangle(const float x, const float y, const float width, const float height,
+				const float angle, const bool isStatic, const float mass, std::string name) {
+		this->position.x = x;
+		this->position.y = y;
+		this->P[0] = Vector2d(x,y); // WHY DO I SEE ONLY ONE LINE?
 		this->P[1] = Vector2d(x,y+height);
 		this->P[2] = Vector2d(x+width,y+height);
 		this->P[3] = Vector2d(x+width,y);
 		this->radius = std::sqrt(width*width + height*height) / 2;
+		this->centerAngle_1 = 2 * std::acos(height / (2*radius));
+    	this->centerAngle_2 = M_PI - this->centerAngle_1;
+		this->angle = angle;
+		this->updatePosition();
+		this->isStatic = isStatic;
+		this->mass = mass;
+		this->invMass = 1/mass;
+		this->name = name;
 	}
 
-	void Rectangle::draw() {
+	void Rectangle::updatePosition() {
+		this->P[0].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[0].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
+
+		this->P[1].x = position.x + radius * std::cos(angle + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[1].y = position.y + radius * std::sin(angle + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
+
+		this->P[2].x = position.x + radius * std::cos(angle + centerAngle_2 / 2);
+		this->P[2].y = position.y + radius * std::sin(angle + centerAngle_2 / 2);
+
+		this->P[3].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 / 2);
+		this->P[3].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 / 2);
+	}
+
+	void Rectangle::draw() const {
 		GLfloat lineVertices[] = {
 			P[0].x, P[0].y,
 			P[1].x, P[1].y,
@@ -33,6 +60,6 @@ namespace Engine2d {
 	}
 
 	void applyForce(Vector2d F) {
-		
+
 	}
 }

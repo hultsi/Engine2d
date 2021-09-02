@@ -5,6 +5,6 @@
 namespace Engine2d {
 	namespace collision {
 		// Test for collision between 2 rectangles
-		bool withConvex(Rectangle &rect, Rectangle &other);
+		bool withRect(Rectangle &rect, Rectangle &other);
 	}
 }

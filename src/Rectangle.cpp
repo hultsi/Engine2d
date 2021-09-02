@@ -9,10 +9,6 @@ namespace Engine2d {
 				const float angle, const bool isStatic, const float mass, std::string name) {
 		this->position.x = x;
 		this->position.y = y;
-		this->P[0] = Vector2d(x,y); // WHY DO I SEE ONLY ONE LINE?
-		this->P[1] = Vector2d(x,y+height);
-		this->P[2] = Vector2d(x+width,y+height);
-		this->P[3] = Vector2d(x+width,y);
 		this->radius = std::sqrt(width*width + height*height) / 2;
 		this->centerAngle_1 = 2 * std::acos(height / (2*radius));
     	this->centerAngle_2 = M_PI - this->centerAngle_1;

@@ -1,4 +1,4 @@
-#include "../glfw/include/glfw3.h"
+#include "glfw3.h"
 #include "Engine2d.h"
 
 namespace Engine2d {

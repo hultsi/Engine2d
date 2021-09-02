@@ -9,6 +9,8 @@ namespace Engine2d {
 			GameControl();
 			Rectangle* createObject(Rectangle rect);
 			DebugCircle* createObject(DebugCircle dbgCircle);
+			
+			void updateAll();
 			void drawAll();
 		private:
 			unsigned int rectId = 0;

@@ -13,14 +13,19 @@ namespace Engine2d {
 		this->centerAngle_1 = 2 * std::acos(height / (2*radius));
     	this->centerAngle_2 = M_PI - this->centerAngle_1;
 		this->angle = angle;
+		this->dx.x = 0;
+		this->dx.y = 0;
 		this->updatePosition();
 		this->isStatic = isStatic;
 		this->mass = mass;
 		this->invMass = 1/mass;
 		this->name = name;
+		this->collision = false;
 	}
 
 	void Rectangle::updatePosition() {
+		this->position = this->position + this->dx;
+
 		this->P[0].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
 		this->P[0].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
 
@@ -32,6 +37,11 @@ namespace Engine2d {
 
 		this->P[3].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 / 2);
 		this->P[3].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 / 2);
+	}
+
+	void Rectangle::update() {
+		updatePosition();
+
 	}
 
 	void Rectangle::draw() const {
@@ -47,8 +57,8 @@ namespace Engine2d {
 		};
 
 		glColor3f(1.0f, 1.0f, 1.0f);
-		// if (collision)
-		// glColor3f(1.0f, 0.0f, 0.0f);
+		if (this->collision)
+			glColor3f(1.0f, 0.0f, 0.0f);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, lineVertices);
 		glDrawArrays(GL_LINES, 0, 8);

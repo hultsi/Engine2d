@@ -15,6 +15,8 @@ class Vector2d {
 		Vector2d operator*(const float scalar) const;
 		bool operator==(const Vector2d &other) const;
 		bool operator!=(const Vector2d &other) const;
+		void operator=(const Vector2d &other);
+
 		float getLength() const;	
 		float dot(const Vector2d &other) const;
 		Vector2d cross(const Vector2d &other) const;

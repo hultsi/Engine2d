@@ -31,6 +31,12 @@ bool Vector2d::operator!=(const Vector2d &other) const {
     return true;
 }
 
+void Vector2d::operator=(const Vector2d &other) {
+	this->x = other.x;
+	this->y = other.y;
+	this->angle = other.angle;
+}
+
 float Vector2d::getLength() const {
     return std::sqrt(this->x * this->x + this->y * this->y);
 }

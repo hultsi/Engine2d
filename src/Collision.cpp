@@ -43,6 +43,8 @@ namespace Engine2d {
 			r0 = &other;
 			r1 = &rect;
 		}
+		rect.collision = true;
+		other.collision = true;
 		return true;
 	}
 }

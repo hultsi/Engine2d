@@ -22,6 +22,11 @@ namespace Engine2d {
 		return &this->debugCircles.back();
 	}
 
+	void GameControl::updateAll() {
+		for (Rectangle &rect: this->rectangles)
+			rect.update();
+	}
+
 	void GameControl::drawAll() {
 		for (const Rectangle &rect: this->rectangles)
 			rect.draw();

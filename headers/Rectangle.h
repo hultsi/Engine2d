@@ -8,6 +8,8 @@ namespace Engine2d {
 	public:
 		std::string name;
 		std::array<Vector2d, 4> P;
+		Vector2d position; // CM position
+		Vector2d dx;
 		bool collision;
 
 		Rectangle(const float x, const float y, const float width, const float height, const float angle,
@@ -17,8 +19,6 @@ namespace Engine2d {
 		void draw() const;
 		void applyForce(Vector2d F);
 	private:
-		Vector2d position; // CM position
-		Vector2d dx;
 		float width, height;
 		float angle;
 		float centerAngle_1; // calculated with lines going from CM to corner points

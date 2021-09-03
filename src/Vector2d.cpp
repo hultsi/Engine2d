@@ -19,7 +19,7 @@ Vector2d Vector2d::operator*(const float scalar) const {
     return Vector2d(this->x * scalar, this->y * scalar);
 }
 
-Vector2d Vector2d::operator*(const float scalar) const {
+Vector2d Vector2d::operator/(const float scalar) const {
     return Vector2d(this->x / scalar, this->y / scalar);
 }
 

@@ -49,16 +49,44 @@ namespace Engine2d {
 	}
 
 	float collision::preventPenetration(Rectangle &rect, Rectangle &other) {
-		// Binary search
-		// 1,2,3,4,5,6,7,8,9,10,11
-		// 1,2,3,4,5,6,7,8,9,10,11
+		// Store initial vector lengths
 		Vector2d v0 = rect.dx;
 		Vector2d v1 = other.dx;
-		std::cout << v0.x << " " << v0.y << "\n";
-		std::cout << v1.x << " " << v1.y << "\n";
-		v1 = .5*v1;
-		std::cout << v1.x << " " << v1.y << "\n";
-		return 0;
+		const float v0Len = v0.getLength();
+		const float v1Len = v1.getLength();
+		// Binary search
+		float scaleFactor = 1;
+		bool collision = true;
+		float binaryFactor = .5;
+		rect.dx = -binaryFactor*rect.dx;
+		other.dx = -binaryFactor*other.dx;
+		while (true) {
+			rect.updatePosition();
+			other.updatePosition();
+			collision = collision::withRect(rect, other);
+			if (collision) {
+				// decrease dx
+				binaryFactor *= .5;
+				rect.dx = rect.dx - binaryFactor * v0;
+				other.dx = other.dx - binaryFactor * v1;
+			} else {
+				// increase dx
+				if (binaryFactor*v0Len <= 1 && binaryFactor*v1Len <= 1) {
+					// break loop and reset original velocities for impulse calculation
+					if (v0Len != 0)
+						scaleFactor = rect.dx.getLength() / v0Len;
+					else
+						scaleFactor = other.dx.getLength() / v1Len;
+					rect.dx = v0;
+					other.dx = v1;
+					break;
+				}
+				binaryFactor *= .5;
+				rect.dx = rect.dx + binaryFactor * v0;
+				other.dx = other.dx + binaryFactor * v1;
+			}
+		}
+		return std::abs(scaleFactor);
 	}
 
 	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,

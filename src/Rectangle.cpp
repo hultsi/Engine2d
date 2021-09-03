@@ -6,13 +6,13 @@
 
 namespace Engine2d {
 	Rectangle::Rectangle(const float x, const float y, const float width, const float height,
-				const float angle, const bool isStatic, const float mass, std::string name) {
+				const float theta, const bool isStatic, const float mass, std::string name) {
 		this->position.x = x;
 		this->position.y = y;
 		this->radius = std::sqrt(width*width + height*height) / 2;
 		this->centerAngle_1 = 2 * std::acos(height / (2*radius));
     	this->centerAngle_2 = M_PI - this->centerAngle_1;
-		this->angle = angle;
+		this->theta = theta;
 		this->dx.x = 0;
 		this->dx.y = 0;
 		this->updatePosition();
@@ -26,17 +26,17 @@ namespace Engine2d {
 	void Rectangle::updatePosition() {
 		this->position = this->position + this->dx;
 
-		this->P[0].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
-		this->P[0].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[0].x = position.x + radius * std::cos(theta + centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[0].y = position.y + radius * std::sin(theta + centerAngle_1 + centerAngle_2 * 3 / 2);
 
-		this->P[1].x = position.x + radius * std::cos(angle + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
-		this->P[1].y = position.y + radius * std::sin(angle + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[1].x = position.x + radius * std::cos(theta + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
+		this->P[1].y = position.y + radius * std::sin(theta + 2 * centerAngle_1 + centerAngle_2 * 3 / 2);
 
-		this->P[2].x = position.x + radius * std::cos(angle + centerAngle_2 / 2);
-		this->P[2].y = position.y + radius * std::sin(angle + centerAngle_2 / 2);
+		this->P[2].x = position.x + radius * std::cos(theta + centerAngle_2 / 2);
+		this->P[2].y = position.y + radius * std::sin(theta + centerAngle_2 / 2);
 
-		this->P[3].x = position.x + radius * std::cos(angle + centerAngle_1 + centerAngle_2 / 2);
-		this->P[3].y = position.y + radius * std::sin(angle + centerAngle_1 + centerAngle_2 / 2);
+		this->P[3].x = position.x + radius * std::cos(theta + centerAngle_1 + centerAngle_2 / 2);
+		this->P[3].y = position.y + radius * std::sin(theta + centerAngle_1 + centerAngle_2 / 2);
 	}
 
 	void Rectangle::update() {

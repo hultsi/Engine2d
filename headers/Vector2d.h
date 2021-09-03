@@ -13,6 +13,7 @@ class Vector2d {
 		Vector2d operator+(const Vector2d &other) const;
 		Vector2d operator-(const Vector2d &other) const;
 		Vector2d operator*(const float scalar) const;
+		Vector2d operator/(const float scalar) const;
 		bool operator==(const Vector2d &other) const;
 		bool operator!=(const Vector2d &other) const;
 		void operator=(const Vector2d &other);

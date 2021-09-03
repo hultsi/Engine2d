@@ -27,9 +27,17 @@ namespace Engine2d {
 		for (int i = 0; i < this->rectangles.size(); ++i)
 			this->rectangles[i].collision = false;
 		for (int i = 0; i < this->rectangles.size()-1; ++i) {
-			for (int k = i+1; k < this->rectangles.size(); ++k)
-				Engine2d::collision::withRect(this->rectangles[i], this->rectangles[k]);
+			for (int k = i+1; k < this->rectangles.size(); ++k) {
+				const bool collision = Engine2d::collision::withRect(this->rectangles[i], this->rectangles[k]);
+				if (collision) {
+					const float fraction = Engine2d::collision::preventPenetration(this->rectangles[i], this->rectangles[k]);
+					// Backtrack every object's position by velocity*fraction
+					// here -->
+				}
+
+			}
 		}
+
 		for (Rectangle &rect: this->rectangles)
 			rect.update();
 	}

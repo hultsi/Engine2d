@@ -19,6 +19,10 @@ Vector2d Vector2d::operator*(const float scalar) const {
     return Vector2d(this->x * scalar, this->y * scalar);
 }
 
+Vector2d Vector2d::operator*(const float scalar) const {
+    return Vector2d(this->x / scalar, this->y / scalar);
+}
+
 bool Vector2d::operator==(const Vector2d &other) const {
     if (this->x == other.x && this->y == other.y)
 		return true;

@@ -31,8 +31,15 @@ namespace Engine2d {
 				const bool collision = Engine2d::collision::withRect(this->rectangles[i], this->rectangles[k]);
 				if (collision) {
 					const float fraction = Engine2d::collision::preventPenetration(this->rectangles[i], this->rectangles[k]);
-					// Backtrack every object's position by velocity*fraction
-					// here -->
+					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
+					// for (int j = 0; j < this->rectangles.size(); ++j) {
+					// 	if (&this->rectangles[j] != &this->rectangles[i] &&
+					// 		&this->rectangles[j] != &this->rectangles[k]) {
+					// 		this->rectangles[j].position = this->rectangles[j].position - fraction * this->rectangles[j].dx;
+					// 	}
+					// }
+					i = -1;
+					k = 0;
 				}
 
 			}

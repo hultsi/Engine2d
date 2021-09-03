@@ -47,4 +47,10 @@ namespace Engine2d {
 		other.collision = true;
 		return true;
 	}
+
+	float absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
+					 const float rest_a, const float rest_b) {
+		const float e = (rest_a < rest_b ? rest_a : rest_b);
+		return -(1 - e) * (vel_b.getLength() - vel_a.getLength()) / (invMass_a + invMass_b);
+	}
 }

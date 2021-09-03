@@ -61,8 +61,9 @@ void Vector2d::rotate(double radians) {
 }
 
 void Vector2d::normalize() {
-    this->x = this->x / std::sqrt(this->x * this->x + this->y * this->y);
-    this->y = this->y / std::sqrt(this->x * this->x + this->y * this->y);
+	const float len = this->getLength();
+    this->x = this->x / len;
+    this->y = this->y / len;
 }
 
 ////////////////////////////////////////////////////

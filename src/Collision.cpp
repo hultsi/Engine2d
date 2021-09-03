@@ -48,17 +48,20 @@ namespace Engine2d {
 		return true;
 	}
 
-	float preventPenetration(Rectangle &rect, Rectangle &other) {
+	float collision::preventPenetration(Rectangle &rect, Rectangle &other) {
 		// Binary search
 		// 1,2,3,4,5,6,7,8,9,10,11
 		// 1,2,3,4,5,6,7,8,9,10,11
 		Vector2d v0 = rect.dx;
 		Vector2d v1 = other.dx;
-
+		std::cout << v0.x << " " << v0.y << "\n";
+		std::cout << v1.x << " " << v1.y << "\n";
+		v1 = .5*v1;
+		std::cout << v1.x << " " << v1.y << "\n";
 		return 0;
 	}
 
-	float absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
+	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
 					 const float rest_a, const float rest_b) {
 		const float e = (rest_a < rest_b ? rest_a : rest_b);
 		return -(1 - e) * (vel_b.getLength() - vel_a.getLength()) / (invMass_a + invMass_b);

@@ -25,3 +25,9 @@ class Vector2d {
 		void rotate(double radians);
 		void normalize();
 };
+
+////////////////////////////////////////////////////
+// Global operator overloads for scalar*Vector2d //
+//////////////////////////////////////////////////
+extern Vector2d operator*(const float &scalar, const Vector2d &vec);
+extern Vector2d operator/(const float &scalar, const Vector2d &vec);

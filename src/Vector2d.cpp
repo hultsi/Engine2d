@@ -1,4 +1,4 @@
-#include "../headers/Vector2d.h"
+#include "Vector2d.h"
 
 Vector2d::Vector2d(float x, float y) {
     this->x = x;
@@ -63,4 +63,14 @@ void Vector2d::rotate(double radians) {
 void Vector2d::normalize() {
     this->x = this->x / std::sqrt(this->x * this->x + this->y * this->y);
     this->y = this->y / std::sqrt(this->x * this->x + this->y * this->y);
+}
+
+////////////////////////////////////////////////////
+// Global operator overloads for scalar*Vector2d //
+//////////////////////////////////////////////////
+Vector2d operator*(const float &scalar, const Vector2d &vec) {
+    return Vector2d(vec.x * scalar, vec.y * scalar);
+}
+Vector2d operator/(const float &scalar, const Vector2d &vec) {
+    return Vector2d(vec.x / scalar, vec.y / scalar);
 }

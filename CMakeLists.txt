@@ -2,15 +2,34 @@ cmake_minimum_required(VERSION 3.16.3)
 
 # project
 project(Engine2d)
-add_executable(${CMAKE_PROJECT_NAME} 
-	main.cpp
-	./src/Engine2d.cpp
-	./src/GameControl.cpp
-	./src/Rectangle.cpp
-	./src/DebugCircle.cpp
-	./src/Collision.cpp
-	./src/Vector2d.cpp
-)
+
+option(DEBUG "Debug mode on or off" ON)
+
+if (DEBUG)
+	add_compile_definitions(DEBUG=1)
+	add_executable(${CMAKE_PROJECT_NAME} 
+		main.cpp
+		./src/Engine2d.cpp
+		./src/GameControl.cpp
+		./src/Rectangle.cpp
+		./src/DebugCircle.cpp
+		./src/DebugLine.cpp
+		./src/Collision.cpp
+		./src/Vector2d.cpp
+	)
+	add_compile_options(-Wall -Wextra -Wpedantic -g)
+else()
+	add_compile_definitions(DEBUG=0)
+	add_executable(${CMAKE_PROJECT_NAME} 
+		main.cpp
+		./src/Engine2d.cpp
+		./src/GameControl.cpp
+		./src/Rectangle.cpp
+		./src/Collision.cpp
+		./src/Vector2d.cpp
+	)
+	add_compile_options(-Wall -Wextra -Wpedantic -g)
+endif(DEBUG)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)

@@ -64,8 +64,4 @@ namespace Engine2d {
 		glDrawArrays(GL_LINES, 0, 8);
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}
-
-	void applyForce(Vector2d F) {
-
-	}
 }

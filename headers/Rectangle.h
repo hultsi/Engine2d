@@ -19,7 +19,9 @@ namespace Engine2d {
 		void updatePosition();
 		void update();
 		void draw() const;
-		void applyForce(Vector2d F);
+
+		// Debug
+		// void dbgDrawVelocityFromCorners() const;
 	private:
 		float width, height;
 		float centerAngle_1; // calculated with lines going from CM to corner points

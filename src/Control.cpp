@@ -13,13 +13,13 @@
 
 namespace Engine2d::Control {
 	unsigned int rectId = 0;
-	std::array<Rectangle, MAX_RECTS> rectangles;
+	std::array<Rectangle, Engine2d::Control::MAX_RECTS> rectangles;
 
 	#if DEBUG == 1
 		unsigned int dbgCircleId = 0;
-		std::array<DebugCircle, MAX_DEBUG_CIRCLES> debugCircles;
+		std::array<DebugCircle, Engine2d::Control::MAX_DEBUG_CIRCLES> debugCircles;
 		unsigned int dbgLineId = 0;
-		std::array<DebugLine, MAX_DEBUG_LINES> debugLines;
+		std::array<DebugLine, Engine2d::Control::MAX_DEBUG_LINES> debugLines;
 	#endif
 }
 

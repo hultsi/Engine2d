@@ -2,9 +2,10 @@
 #include <array>
 #include <string>
 #include "Vector2d.h"
+#include "RigidBody.h"
 
 namespace Engine2d {
-	class Rectangle {
+	class Rectangle : public RigidBody {
 	public:
 		std::string name;
 		std::array<Vector2d, 4> P;
@@ -17,12 +18,11 @@ namespace Engine2d {
 		Rectangle() {};
 		Rectangle(const float x, const float y, const float width, const float height, const float theta,
 				const bool isStatic, const float mass, std::string name);
+		~Rectangle() {};
 		void updatePosition();
 		void update();
 		void draw() const;
 		void operator=(Rectangle other);
-		// Debug
-		// void dbgDrawVelocityFromCorners() const;
 	private:
 		float width, height;
 		float centerAngle_1; // calculated with lines going from CM to corner points

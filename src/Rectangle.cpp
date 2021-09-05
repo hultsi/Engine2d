@@ -2,7 +2,12 @@
 #include "Rectangle.h"
 #include "Vector2d.h"
 #include "glfw3.h"
-#include <iostream>
+#include "Control.h"
+
+#if DEBUG == 1
+	#include <iostream>
+	#include "DebugLine.h"
+#endif 
 
 namespace Engine2d {
 	Rectangle::Rectangle(const float x, const float y, const float width, const float height,
@@ -21,6 +26,25 @@ namespace Engine2d {
 		this->invMass = 1/mass;
 		this->name = name;
 		this->collision = false;
+	}
+	
+	void Rectangle::operator=(Rectangle other) {
+		this->name = other.name;
+		for (int i = 0; i < 4; ++i)
+			this->P[i] = other.P[i];
+		this->position = other.position;
+		this->dx = other.dx;
+		this->theta = other.theta;
+		this->dtheta = other.dtheta;
+		this->collision = other.collision;
+		this->width = other.width;
+		this->height = other.height;
+		this->centerAngle_1 = other.centerAngle_1;
+		this->centerAngle_2 = other.centerAngle_2;
+		this->mass = other.mass;
+		this->invMass = other.invMass;
+		this->radius = other.radius;
+		this->isStatic = other.isStatic;
 	}
 
 	void Rectangle::updatePosition() {
@@ -41,7 +65,6 @@ namespace Engine2d {
 
 	void Rectangle::update() {
 		updatePosition();
-
 	}
 
 	void Rectangle::draw() const {
@@ -58,7 +81,7 @@ namespace Engine2d {
 
 		glColor3f(1.0f, 1.0f, 1.0f);
 		if (this->collision)
-			glColor3f(1.0f, 0.0f, 0.0f);
+			glColor3f(0.0f, 0.0f, 1.0f);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, lineVertices);
 		glDrawArrays(GL_LINES, 0, 8);

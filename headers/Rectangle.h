@@ -14,12 +14,13 @@ namespace Engine2d {
 		float dtheta;
 		bool collision;
 
+		Rectangle() {};
 		Rectangle(const float x, const float y, const float width, const float height, const float theta,
 				const bool isStatic, const float mass, std::string name);
 		void updatePosition();
 		void update();
 		void draw() const;
-
+		void operator=(Rectangle other);
 		// Debug
 		// void dbgDrawVelocityFromCorners() const;
 	private:

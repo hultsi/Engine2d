@@ -10,7 +10,7 @@ if (DEBUG)
 	add_executable(${CMAKE_PROJECT_NAME} 
 		main.cpp
 		./src/Engine2d.cpp
-		./src/GameControl.cpp
+		./src/Control.cpp
 		./src/Rectangle.cpp
 		./src/DebugCircle.cpp
 		./src/DebugLine.cpp
@@ -23,7 +23,7 @@ else()
 	add_executable(${CMAKE_PROJECT_NAME} 
 		main.cpp
 		./src/Engine2d.cpp
-		./src/GameControl.cpp
+		./src/Control.cpp
 		./src/Rectangle.cpp
 		./src/Collision.cpp
 		./src/Vector2d.cpp

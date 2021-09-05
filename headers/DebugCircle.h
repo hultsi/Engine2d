@@ -5,15 +5,16 @@
 
 namespace Engine2d {
 	class DebugCircle {
-		public:
-			std::string name;
-			GLfloat lineVertices[32];
-			DebugCircle(float x, float y, float radius, std::string name = "");
+	public:
+		std::string name;
+		GLfloat lineVertices[32];
+		DebugCircle() {};
+		DebugCircle(float x, float y, float radius, std::string name = "");
 
-			void draw() const;
-		private:
-			float x = 0;
-			float y = 0;
-			float radius = 0;
+		void draw() const;
+	private:
+		float x = 0;
+		float y = 0;
+		float radius = 0;
 	};
 }

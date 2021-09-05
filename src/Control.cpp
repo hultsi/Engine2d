@@ -30,17 +30,18 @@ namespace Engine2d {
 		Engine2d::Control::rectangles[rectId] = rect;
 		#if DEBUG == 1
 			for (int i = 0; i < 4; ++i)
-				Engine2d::Control::createObject(Engine2d::DebugLine(rectangles[rectId].P[i], rectangles[rectId].dx, 60, ""));
+				Engine2d::Control::createObject(Engine2d::DebugLine(rectangles[rectId].P[i], rectangles[rectId].dx, 30, ""));
 		#endif
 		++Engine2d::Control::rectId;
 		return &rectangles[rectId-1];
 	}
 
 	void Control::updateAll() {
+		for (int i = 0; i < Engine2d::Control::rectId; ++i)
+			rectangles[i].update();
 		// Reset collision. Todo: shouldn't be necessary?
 		for (int i = 0; i < Engine2d::Control::rectId; ++i)
 			Engine2d::Control::rectangles[i].collision = false;
-		
 		for (int i = 0; i < Engine2d::Control::rectId - 1; ++i) {
 			for (int k = i+1; k < Engine2d::Control::rectId; ++k) {
 				const bool collision = Engine2d::collision::withRect(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
@@ -54,14 +55,10 @@ namespace Engine2d {
 					// 	}
 					// }
 					i = -1;
-					k = 0;
+					break;
 				}
-
 			}
 		}
-
-		for (int i = 0; i < Engine2d::Control::rectId; ++i)
-			rectangles[i].update();
 	}
 
 	void Control::drawAll() {

@@ -36,7 +36,7 @@ namespace Engine2d {
 				d0_Max = std::max_element(d0, d0+4);
 				d1_Min = std::min_element(d1, d1+4);
 				d1_Max = std::max_element(d1, d1+4);
-				if ((*d0_Min >= *d1_Max || *d1_Min >= *d0_Max)) {
+				if ((*d0_Min > *d1_Max || *d1_Min > *d0_Max)) {
 					return false;
 				}
 			}
@@ -48,6 +48,9 @@ namespace Engine2d {
 		return true;
 	}
 
+	// Moves object out of another object but does not reset velocities
+	// If you want to _not_ use impulse but just stop objects when they collide
+	// set velocities to 0 at the end of this function
 	float collision::preventPenetration(Rectangle &rect, Rectangle &other) {
 		// Store initial vector lengths
 		Vector2d v0 = rect.dx;
@@ -71,7 +74,8 @@ namespace Engine2d {
 				other.dx = other.dx - binaryFactor * v1;
 			} else {
 				// increase dx
-				if (binaryFactor*v0Len <= 1 && binaryFactor*v1Len <= 1) {
+				if (binaryFactor*v0.x <= 2 && binaryFactor*v0.y <= 2 &&
+					binaryFactor*v1.x <= 2 && binaryFactor*v1.y <= 2) {
 					// break loop and reset original velocities for impulse calculation
 					if (v0Len != 0)
 						scaleFactor = rect.dx.getLength() / v0Len;

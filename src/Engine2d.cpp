@@ -1,6 +1,45 @@
 #include "glfw3.h"
 #include "Engine2d.h"
 
+#if DEBUG == 1
+	#include <vector>
+	#include <iostream>
+	#include <algorithm>	
+	#include <string>
+	#include <sstream>
+
+	// void __attribute__((constructor)) onStart();
+	void __attribute__((destructor)) Engine2d::onExit();
+
+	void* operator new(size_t size) {
+		void* p = malloc(size);
+		++Engine2d::allocations;
+		return p;
+	}
+
+	void operator delete(void *p) {
+		free(p);
+		--Engine2d::allocations;
+	}
+
+	void operator delete[](void *p) {
+		free(p);
+		--Engine2d::allocations;
+	}
+
+	namespace Engine2d {
+		// GLFW leaks _at least_ 59 allocations
+		unsigned int allocations = 0;
+		void onExit() {
+			std::cout << "\n";
+			std::cout << "|--------------------------------------------|\n";
+			std::cout << "|  Number of allocations in cosmic ether: " << Engine2d::allocations << " |\n";
+			std::cout << "| -- GLFW leaks _at least_ 59 allocations -- |\n";
+			std::cout << "|--------------------------------------------|\n";
+		}
+	}
+#endif
+
 namespace Engine2d {
 	unsigned int W_WIDTH = 1280;
 	unsigned int W_HEIGHT = 800;

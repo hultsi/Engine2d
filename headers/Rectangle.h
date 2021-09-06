@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <string>
+// #include <tuple>
 #include "Vector2d.h"
 #include "RigidBody.h"
 
@@ -8,6 +9,7 @@ namespace Engine2d {
 	class Rectangle : public RigidBody {
 	public:
 		std::string name;
+		// std::tuple<RigidBody*, Vector2d*> colliders;
 		std::array<Vector2d, 4> P;
 		Vector2d position; // CM position
 		Vector2d dx;

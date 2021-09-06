@@ -7,12 +7,12 @@
 namespace Engine2d {
 	class RigidBody {
 	public:
-		std::string name;
-		Vector2d position; // CM position
-		Vector2d dx;
-		float theta;
-		float dtheta;
-		bool collision;
+		// std::string name;
+		// Vector2d position; // CM position
+		// Vector2d dx;
+		// float theta;
+		// float dtheta;
+		// bool collision;
 
 		RigidBody() {};
 		virtual ~RigidBody() {};
@@ -20,9 +20,9 @@ namespace Engine2d {
 		virtual void update() {};
 		virtual void draw() const {};
 		virtual void operator=(RigidBody other) {};
-	protected:
-		float mass;
-		float invMass;
-		bool isStatic;
+	// protected:
+	// 	float mass;
+	// 	float invMass;
+	// 	bool isStatic;
 	};
 }

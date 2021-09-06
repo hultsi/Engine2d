@@ -1,6 +1,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <memory>
 #include "Control.h"
 #include "Rectangle.h"
 #include "Collision.h"
@@ -39,9 +40,13 @@ namespace Engine2d {
 	void Control::updateAll() {
 		for (int i = 0; i < Engine2d::Control::rectId; ++i)
 			rectangles[i].update();
+
 		// Reset collision. Todo: shouldn't be necessary?
 		for (int i = 0; i < Engine2d::Control::rectId; ++i)
 			Engine2d::Control::rectangles[i].collision = false;
+
+		std::unique_ptr<Vector2d> normal = std::unique_ptr<Vector2d>(new Vector2d(0,0));
+		std::unique_ptr<Vector2d> point = std::unique_ptr<Vector2d>(new Vector2d(0,0));
 		for (int i = 0; i < Engine2d::Control::rectId - 1; ++i) {
 			for (int k = i+1; k < Engine2d::Control::rectId; ++k) {
 				const bool collision = Engine2d::collision::withRect(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);

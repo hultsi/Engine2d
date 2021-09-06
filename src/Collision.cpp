@@ -1,10 +1,13 @@
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include "Collision.h"
 #include "Rectangle.h"
 #include "Vector2d.h"
 
-#include <iostream>
+#if DEBUG == 1
+	#include <iostream>
+#endif
 
 namespace Engine2d {
 	// todo: later on generally for convex objects
@@ -93,6 +96,11 @@ namespace Engine2d {
 		return std::abs(scaleFactor);
 	}
 
+	float getCollisionNormal(Rectangle &rect, Rectangle &other, std::unique_ptr<Vector2d> point = nullptr, std::unique_ptr<Vector2d> normal = nullptr) {
+
+		return 0.0f;
+	}
+	
 	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
 					 const float rest_a, const float rest_b) {
 		const float e = (rest_a < rest_b ? rest_a : rest_b);

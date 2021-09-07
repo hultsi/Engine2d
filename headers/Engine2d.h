@@ -8,7 +8,8 @@
 namespace Engine2d {
 	#if DEBUG == 1
 		extern unsigned int allocations;
-		void onExit();
+		void onEngineStart();
+		void onEngineExit();
 	#endif
 
 	// GLFW related initialization

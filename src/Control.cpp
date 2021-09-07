@@ -52,6 +52,13 @@ namespace Engine2d {
 				const bool collision = Engine2d::collision::withRect(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
 				if (collision) {
 					const float fraction = Engine2d::collision::preventPenetration(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
+					const float dist = Engine2d::collision::getCollisionNormal(
+						Engine2d::Control::rectangles[i], 
+						Engine2d::Control::rectangles[k],
+						point,
+						normal
+					);
+					std::cout << normal->x << " " << normal->y << "\n";
 					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
 					// for (int j = 0; j < Engine2d::Control::rectangles.size(); ++j) {
 					// 	if (&Engine2d::Control::rectangles[j] != &Engine2d::Control::rectangles[i] &&

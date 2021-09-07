@@ -8,8 +8,8 @@
 	#include <string>
 	#include <sstream>
 
-	// void __attribute__((constructor)) onStart();
-	void __attribute__((destructor)) Engine2d::onExit();
+	void __attribute__((constructor)) Engine2d::onEngineStart();
+	void __attribute__((destructor)) Engine2d::onEngineExit();
 
 	void* operator new(size_t size) {
 		void* p = malloc(size);
@@ -30,7 +30,12 @@
 	namespace Engine2d {
 		// GLFW leaks _at least_ 59 allocations
 		unsigned int allocations = 0;
-		void onExit() {
+		void onEngineStart() {
+			std::cout << "\n";
+			std::cout << "Starting in DEBUG...\n";
+		}
+
+		void onEngineExit() {
 			std::cout << "\n";
 			std::cout << "|--------------------------------------------|\n";
 			std::cout << "|  Number of allocations in cosmic ether: " << Engine2d::allocations << " |\n";

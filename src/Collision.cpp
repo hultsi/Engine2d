@@ -97,6 +97,8 @@ namespace Engine2d {
 		return std::abs(scaleFactor);
 	}
 
+	// Returns collision normal pointing away from the rectangle's collision plane
+	// towards the collision point of the other rectangle
 	float collision::getCollisionNormal(Rectangle &rect, Rectangle &other, std::unique_ptr<Vector2d> &point, std::unique_ptr<Vector2d> &normal) {
 		constexpr int N = 2; // permutations
 		constexpr int corners = 4;
@@ -153,6 +155,6 @@ namespace Engine2d {
 	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
 					 const float rest_a, const float rest_b) {
 		const float e = (rest_a < rest_b ? rest_a : rest_b);
-		return -(1 - e) * (vel_b.getLength() - vel_a.getLength()) / (invMass_a + invMass_b);
+		return (-(1 - e) * (vel_b.getLength() - vel_a.getLength()) / (invMass_a + invMass_b));
 	}
 }

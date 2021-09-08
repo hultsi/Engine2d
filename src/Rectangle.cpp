@@ -11,7 +11,7 @@
 
 namespace Engine2d {
 	Rectangle::Rectangle(const float x, const float y, const float width, const float height,
-				const float theta, const bool isStatic, const float mass, std::string name) {
+				const float theta, const bool isStatic, const float mass, const float restitution, std::string name) {
 		this->position.x = x;
 		this->position.y = y;
 		this->radius = std::sqrt(width*width + height*height) / 2;
@@ -24,6 +24,7 @@ namespace Engine2d {
 		this->isStatic = isStatic;
 		this->mass = mass;
 		this->invMass = 1/mass;
+		this->restitution = restitution;
 		this->name = name;
 		this->collision = false;
 	}
@@ -43,6 +44,7 @@ namespace Engine2d {
 		this->centerAngle_2 = other.centerAngle_2;
 		this->mass = other.mass;
 		this->invMass = other.invMass;
+		this->restitution = other.restitution;
 		this->radius = other.radius;
 		this->isStatic = other.isStatic;
 	}

@@ -15,11 +15,14 @@ namespace Engine2d {
 		Vector2d dx;
 		float theta;
 		float dtheta;
+		float restitution;
+		float mass;
+		float invMass;
 		bool collision;
 
 		Rectangle() {};
 		Rectangle(const float x, const float y, const float width, const float height, const float theta,
-				const bool isStatic, const float mass, std::string name);
+				const bool isStatic, const float mass, const float restitution, std::string name);
 		~Rectangle() {};
 		void updatePosition();
 		void update();
@@ -29,8 +32,6 @@ namespace Engine2d {
 		float width, height;
 		float centerAngle_1; // calculated with lines going from CM to corner points
 		float centerAngle_2; // calculated with lines going from CM to corner points
-		float mass;
-		float invMass;
 		float radius;
 		bool isStatic;
 	};

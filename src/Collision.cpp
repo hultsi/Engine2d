@@ -4,6 +4,7 @@
 #include "Collision.h"
 #include "Rectangle.h"
 #include "Vector2d.h"
+// #include "Engine2d.h"
 
 #if DEBUG == 1
 	#include <iostream>
@@ -110,6 +111,7 @@ namespace Engine2d {
 		float *d1_Max = 0;
 		float *d1_Min = 0;
 		float dist = -1;
+		auto sign = [](float val){ return (float(0) < val) - (val < float(0)); };
 		for (int i = 0; i < N; ++i) {
 			for (int k = 0; k < maxProjs; ++k) {
 				// Create projection vector aligned parallel to r0 kth side
@@ -126,8 +128,8 @@ namespace Engine2d {
 				d1_Max = std::max_element(d1, d1+4);
 				if ((*d0_Min > *d1_Max || *d1_Min > *d0_Max)) {
 					// Collision plane is formed by r0
-					normal->x = proj.y;
-					normal->y = -1*proj.x;
+					normal->x = sign(*d1_Min - *d0_Min) * proj.x;
+					normal->y = sign(*d1_Min - *d0_Min) * proj.y;
 					// Collision point can thus be found from r1
 					// If however, there are duplicate collision points (close to each other)
 					// Then we have plane-plane collision

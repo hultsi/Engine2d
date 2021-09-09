@@ -38,8 +38,7 @@
 		void onEngineExit() {
 			std::cout << "\n";
 			std::cout << "|--------------------------------------------|\n";
-			std::cout << "|  Number of allocations in cosmic ether: " << Engine2d::allocations << " |\n";
-			std::cout << "| -- GLFW leaks _at least_ 59 allocations -- |\n";
+			std::cout << "|  Number of allocations in cosmic ether: " << Engine2d::allocations-59 << "  |\n"; // GLFW doesn't call delete in 59 cases?
 			std::cout << "|--------------------------------------------|\n";
 		}
 	}

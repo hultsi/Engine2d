@@ -99,7 +99,7 @@ namespace Engine2d {
 
 	// Returns collision normal pointing away from the rectangle's collision plane
 	// towards the collision point of the other rectangle
-	float collision::getCollisionNormal(Rectangle &rect, Rectangle &other, std::unique_ptr<Vector2d> &point, std::unique_ptr<Vector2d> &normal) {
+	Rectangle* collision::getCollisionNormal(Rectangle &rect, Rectangle &other, std::unique_ptr<Vector2d> &point, std::unique_ptr<Vector2d> &normal) {
 		constexpr int N = 2; // permutations
 		constexpr int corners = 4;
 		constexpr int maxProjs = 2; // corners divided by two rounded up --> 2
@@ -130,26 +130,27 @@ namespace Engine2d {
 				d1_Max = std::max_element(d1, d1+4);
 				if ((*d0_Min > *d1_Max || *d1_Min > *d0_Max)) {
 					// Collision plane is formed by r0
-					normal->x = sign(*d1_Min - *d0_Min) * proj.x;
-					normal->y = sign(*d1_Min - *d0_Min) * proj.y;
+					normal->x = -sign(*d1_Min - *d0_Min) * proj.x;
+					normal->y = -sign(*d1_Min - *d0_Min) * proj.y;
 					// Collision point can thus be found from r1
 					// If however, there are duplicate collision points (close to each other)
 					// Then we have plane-plane collision
 					if (std::abs(*d0_Min - *d1_Max) < std::abs(*d1_Min - *d0_Max)) {
 						point->x = r1->P[std::distance(d1, d1_Max)].x;
 						point->y = r1->P[std::distance(d1, d1_Max)].y;
-						return std::abs(*d0_Min - *d1_Max);
+						// return std::abs(*d0_Min - *d1_Max);
 					} else {
 						point->x = r1->P[std::distance(d0, d0_Max)].x;
 						point->y = r1->P[std::distance(d0, d0_Max)].y;
-						return std::abs(*d1_Min - *d0_Max);
+						// return std::abs(*d1_Min - *d0_Max);
 					}
+					return r1;
 				}
 			}
 			r0 = &other;
 			r1 = &rect;
 		}
-		return dist;
+		return nullptr;
 	}
 	
 	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,

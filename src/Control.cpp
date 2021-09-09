@@ -52,12 +52,13 @@ namespace Engine2d {
 				const bool collision = Engine2d::collision::withRect(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
 				if (collision) {
 					const float fraction = Engine2d::collision::preventPenetration(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
-					const float dist = Engine2d::collision::getCollisionNormal(
+					const Rectangle* R = Engine2d::collision::getCollisionNormal(
 						Engine2d::Control::rectangles[i], 
 						Engine2d::Control::rectangles[k],
 						point,
 						normal
 					);
+					const Rectangle* R2 = &rectangles[k];
 					const float impulse = Engine2d::collision::absImpulse(
 						Engine2d::Control::rectangles[i].dx,
 						Engine2d::Control::rectangles[k].dx,
@@ -67,13 +68,20 @@ namespace Engine2d {
 						Engine2d::Control::rectangles[k].restitution
 					);
 					Vector2d norm = std::abs(impulse) * (*normal);
-					Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx + norm/Engine2d::Control::rectangles[i].mass;
-					Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx - norm/Engine2d::Control::rectangles[k].mass;
+					if (R == &Engine2d::Control::rectangles[i]) {
+						Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx - norm/Engine2d::Control::rectangles[i].mass;
+						Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx + norm/Engine2d::Control::rectangles[k].mass;
+					} else {
+						Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx + norm/Engine2d::Control::rectangles[i].mass;
+						Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx - norm/Engine2d::Control::rectangles[k].mass;
+					}
+					// Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx + norm/Engine2d::Control::rectangles[i].mass;
+					// Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx - norm/Engine2d::Control::rectangles[k].mass;
 					// Engine2d::Control::rectangles[k].dx.x = Engine2d::Control::rectangles[k].dx.x + 10;
 					// Engine2d::Control::rectangles[k].dx.y = Engine2d::Control::rectangles[k].dx.y + 10;
 					// Engine2d::Control::rectangles[i].dx.x = Engine2d::Control::rectangles[i].dx.x - 5;
 					// Engine2d::Control::rectangles[i].dx.y = Engine2d::Control::rectangles[i].dx.y - 5;
-					std::cout << norm.x << " " << norm.y << "\n";
+					// std::cout << norm.x << " " << norm.y << "\n";
 					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
 					// for (int j = 0; j < Engine2d::Control::rectangles.size(); ++j) {
 					// 	if (&Engine2d::Control::rectangles[j] != &Engine2d::Control::rectangles[i] &&

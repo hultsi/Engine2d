@@ -49,6 +49,10 @@ namespace Engine2d {
 		this->isStatic = other.isStatic;
 	}
 
+	void Rectangle::applyImpulse(Vector2d impulse) {
+
+	}
+	
 	void Rectangle::updatePosition() {
 		this->position = this->position + this->dx;
 

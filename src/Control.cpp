@@ -45,18 +45,20 @@ namespace Engine2d {
 		for (int i = 0; i < Control::rectId; ++i)
 			Engine2d::Control::rectangles[i].collision = false;
 
-		std::unique_ptr<Vector2d> normal = std::unique_ptr<Vector2d>(new Vector2d(0,0));
+		std::unique_ptr<Vector2d> normal_1 = std::unique_ptr<Vector2d>(new Vector2d(0,0));
+		std::unique_ptr<Vector2d> normal_2 = std::unique_ptr<Vector2d>(new Vector2d(0,0));
 		std::unique_ptr<Vector2d> point = std::unique_ptr<Vector2d>(new Vector2d(0,0));
 		for (int i = 0; i < Control::rectId - 1; ++i) {
 			for (int k = i+1; k < Control::rectId; ++k) {
 				const bool collision = collision::withRect(Control::rectangles[i], Control::rectangles[k]);
 				if (collision) {
 					const float fraction = collision::preventPenetration(Control::rectangles[i], Control::rectangles[k]);
-					const Rectangle* R = collision::getCollisionNormal(
+					collision::getCollisionNormal(
 						Control::rectangles[i], 
 						Control::rectangles[k],
-						point,
-						normal
+						normal_1,
+						normal_2,
+						point
 					);
 					// const Rectangle* R2 = &rectangles[k]; // for debugging
 					const float impulse = collision::absImpulse(
@@ -67,14 +69,8 @@ namespace Engine2d {
 						Control::rectangles[i].restitution,
 						Control::rectangles[k].restitution
 					);
-					Vector2d norm = std::abs(impulse) * (*normal);
-					if (R == &Control::rectangles[i]) {
-						Control::rectangles[i].dx = Control::rectangles[i].dx - norm/Control::rectangles[i].mass;
-						Control::rectangles[k].dx = Control::rectangles[k].dx + norm/Control::rectangles[k].mass;
-					} else {
-						Control::rectangles[i].dx = Control::rectangles[i].dx + norm/Control::rectangles[i].mass;
-						Control::rectangles[k].dx = Control::rectangles[k].dx - norm/Control::rectangles[k].mass;
-					}
+					Control::rectangles[i].dx = Control::rectangles[i].dx + std::abs(impulse)*(*normal_1)/Control::rectangles[i].mass;
+					Control::rectangles[k].dx = Control::rectangles[k].dx + std::abs(impulse)*(*normal_2)/Control::rectangles[k].mass;
 					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
 					// for (int j = 0; j < Control::rectangles.size(); ++j) {
 					// 	if (&Control::rectangles[j] != &Control::rectangles[i] &&

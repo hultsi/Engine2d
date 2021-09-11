@@ -24,6 +24,7 @@ namespace Engine2d {
 		Rectangle(const float x, const float y, const float width, const float height, const float theta,
 				const bool isStatic, const float mass, const float restitution, std::string name);
 		~Rectangle() {};
+		void applyImpulse(Vector2d impulse);
 		void updatePosition();
 		void update();
 		void draw() const;

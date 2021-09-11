@@ -60,7 +60,6 @@ namespace Engine2d {
 						normal_2,
 						point
 					);
-					// const Rectangle* R2 = &rectangles[k]; // for debugging
 					const float impulse = collision::absImpulse(
 						Control::rectangles[i].dx,
 						Control::rectangles[k].dx,
@@ -69,8 +68,9 @@ namespace Engine2d {
 						Control::rectangles[i].restitution,
 						Control::rectangles[k].restitution
 					);
-					Control::rectangles[i].dx = Control::rectangles[i].dx + std::abs(impulse)*(*normal_1)/Control::rectangles[i].mass;
-					Control::rectangles[k].dx = Control::rectangles[k].dx + std::abs(impulse)*(*normal_2)/Control::rectangles[k].mass;
+					Control::rectangles[i].applyImpulse(impulse * (*normal_1));
+					Control::rectangles[k].applyImpulse(impulse * (*normal_2));
+
 					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
 					// for (int j = 0; j < Control::rectangles.size(); ++j) {
 					// 	if (&Control::rectangles[j] != &Control::rectangles[i] &&

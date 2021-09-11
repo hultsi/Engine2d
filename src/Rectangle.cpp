@@ -50,9 +50,9 @@ namespace Engine2d {
 	}
 
 	void Rectangle::applyImpulse(Vector2d impulse) {
-
+		this->dx += impulse/this->mass;
 	}
-	
+
 	void Rectangle::updatePosition() {
 		this->position = this->position + this->dx;
 

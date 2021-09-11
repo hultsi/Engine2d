@@ -164,6 +164,6 @@ namespace Engine2d {
 		const float e = (rest_a < rest_b ? rest_a : rest_b);
 		const float xdiff = (vel_b.x - vel_a.x);
 		const float ydiff = (vel_b.y - vel_a.y);
-		return (-(1 - e) * (std::sqrt(xdiff*xdiff + ydiff*ydiff)) / (invMass_a + invMass_b));
+		return std::abs(-(1 - e) * (std::sqrt(xdiff*xdiff + ydiff*ydiff)) / (invMass_a + invMass_b));
 	}
 }

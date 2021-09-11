@@ -3,8 +3,6 @@
 Vector2d::Vector2d(float x, float y) {
     this->x = x;
     this->y = y;
-    this->angle = std::atan2(this->y, this->x);
-    (this->angle > 0 ? this->angle : (2 * M_PI + this->angle));
 }
 
 Vector2d Vector2d::operator+(const Vector2d &other) const {
@@ -38,7 +36,23 @@ bool Vector2d::operator!=(const Vector2d &other) const {
 void Vector2d::operator=(const Vector2d &other) {
 	this->x = other.x;
 	this->y = other.y;
-	this->angle = other.angle;
+}
+
+Vector2d &Vector2d::operator+=(const Vector2d &other) {
+	this->x += other.x;
+	this->y += other.y;
+	return *this;
+}
+
+Vector2d &Vector2d::operator-=(const Vector2d &other) {
+	this->x -= other.x;
+	this->y -= other.y;
+	return *this;
+}
+
+float Vector2d::getAngle() const {
+	const float angle = std::atan2(this->y, this->x);
+    return (angle > 0 ? angle : (2 * M_PI + angle));
 }
 
 float Vector2d::getLength() const {
@@ -55,9 +69,9 @@ Vector2d Vector2d::cross(const Vector2d &other) const {
 
 void Vector2d::rotate(double radians) {
 	const float len = getLength();
-	this->angle += radians;
-    this->x = len * std::cos(this->angle);
-    this->y = len * std::sin(this->angle);
+	const float angle = getAngle() + radians;
+    this->x = len * std::cos(angle);
+    this->y = len * std::sin(angle);
 }
 
 void Vector2d::normalize() {

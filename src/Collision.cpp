@@ -138,11 +138,9 @@ namespace Engine2d {
 					if (std::abs(*d0_Min - *d1_Max) < std::abs(*d1_Min - *d0_Max)) {
 						point->x = r1->P[std::distance(d1, d1_Max)].x;
 						point->y = r1->P[std::distance(d1, d1_Max)].y;
-						// return std::abs(*d0_Min - *d1_Max);
 					} else {
 						point->x = r1->P[std::distance(d0, d0_Max)].x;
 						point->y = r1->P[std::distance(d0, d0_Max)].y;
-						// return std::abs(*d1_Min - *d0_Max);
 					}
 					return r1;
 				}
@@ -156,6 +154,8 @@ namespace Engine2d {
 	float collision::absImpulse(const Vector2d vel_a, const Vector2d vel_b, const float invMass_a, const float invMass_b,
 					 const float rest_a, const float rest_b) {
 		const float e = (rest_a < rest_b ? rest_a : rest_b);
-		return (-(1 - e) * (vel_b.getLength() - vel_a.getLength()) / (invMass_a + invMass_b));
+		const float xdiff = (vel_b.x - vel_a.x);
+		const float ydiff = (vel_b.y - vel_a.y);
+		return (-(1 - e) * (std::sqrt(xdiff*xdiff + ydiff*ydiff)) / (invMass_a + invMass_b));
 	}
 }

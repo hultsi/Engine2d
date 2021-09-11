@@ -14,79 +14,72 @@
 
 namespace Engine2d::Control {
 	unsigned int rectId = 0;
-	std::array<Rectangle, Engine2d::Control::MAX_RECTS> rectangles;
+	std::array<Rectangle, Control::MAX_RECTS> rectangles;
 
 	#if DEBUG == 1
 		unsigned int dbgCircleId = 0;
-		std::array<DebugCircle, Engine2d::Control::MAX_DEBUG_CIRCLES> debugCircles;
+		std::array<DebugCircle, Control::MAX_DEBUG_CIRCLES> debugCircles;
 		unsigned int dbgLineId = 0;
-		std::array<DebugLine, Engine2d::Control::MAX_DEBUG_LINES> debugLines;
+		std::array<DebugLine, Control::MAX_DEBUG_LINES> debugLines;
 	#endif
 }
 
 namespace Engine2d {
 	Rectangle* Control::createObject(Rectangle rect) {
 		if (rect.name == "")
-			rect.name = std::string("rect_") + std::to_string(Engine2d::Control::rectId);
-		Engine2d::Control::rectangles[rectId] = rect;
+			rect.name = std::string("rect_") + std::to_string(Control::rectId);
+		Control::rectangles[rectId] = rect;
 		#if DEBUG == 1
 			for (int i = 0; i < 4; ++i)
-				Engine2d::Control::createObject(Engine2d::DebugLine(rectangles[rectId].P[i], rectangles[rectId].dx, 30, ""));
+				Control::createObject(DebugLine(rectangles[rectId].P[i], rectangles[rectId].dx, 30, ""));
 		#endif
-		++Engine2d::Control::rectId;
+		++Control::rectId;
 		return &rectangles[rectId-1];
 	}
 
 	void Control::updateAll() {
-		for (int i = 0; i < Engine2d::Control::rectId; ++i)
+		for (int i = 0; i < Control::rectId; ++i)
 			rectangles[i].update();
 
 		// Reset collision. Todo: shouldn't be necessary?
-		for (int i = 0; i < Engine2d::Control::rectId; ++i)
+		for (int i = 0; i < Control::rectId; ++i)
 			Engine2d::Control::rectangles[i].collision = false;
 
 		std::unique_ptr<Vector2d> normal = std::unique_ptr<Vector2d>(new Vector2d(0,0));
 		std::unique_ptr<Vector2d> point = std::unique_ptr<Vector2d>(new Vector2d(0,0));
-		for (int i = 0; i < Engine2d::Control::rectId - 1; ++i) {
-			for (int k = i+1; k < Engine2d::Control::rectId; ++k) {
-				const bool collision = Engine2d::collision::withRect(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
+		for (int i = 0; i < Control::rectId - 1; ++i) {
+			for (int k = i+1; k < Control::rectId; ++k) {
+				const bool collision = collision::withRect(Control::rectangles[i], Control::rectangles[k]);
 				if (collision) {
-					const float fraction = Engine2d::collision::preventPenetration(Engine2d::Control::rectangles[i], Engine2d::Control::rectangles[k]);
-					const Rectangle* R = Engine2d::collision::getCollisionNormal(
-						Engine2d::Control::rectangles[i], 
-						Engine2d::Control::rectangles[k],
+					const float fraction = collision::preventPenetration(Control::rectangles[i], Control::rectangles[k]);
+					const Rectangle* R = collision::getCollisionNormal(
+						Control::rectangles[i], 
+						Control::rectangles[k],
 						point,
 						normal
 					);
-					const Rectangle* R2 = &rectangles[k];
-					const float impulse = Engine2d::collision::absImpulse(
-						Engine2d::Control::rectangles[i].dx,
-						Engine2d::Control::rectangles[k].dx,
-						Engine2d::Control::rectangles[i].invMass,
-						Engine2d::Control::rectangles[k].invMass,
-						Engine2d::Control::rectangles[i].restitution,
-						Engine2d::Control::rectangles[k].restitution
+					// const Rectangle* R2 = &rectangles[k]; // for debugging
+					const float impulse = collision::absImpulse(
+						Control::rectangles[i].dx,
+						Control::rectangles[k].dx,
+						Control::rectangles[i].invMass,
+						Control::rectangles[k].invMass,
+						Control::rectangles[i].restitution,
+						Control::rectangles[k].restitution
 					);
 					Vector2d norm = std::abs(impulse) * (*normal);
-					if (R == &Engine2d::Control::rectangles[i]) {
-						Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx - norm/Engine2d::Control::rectangles[i].mass;
-						Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx + norm/Engine2d::Control::rectangles[k].mass;
+					if (R == &Control::rectangles[i]) {
+						Control::rectangles[i].dx = Control::rectangles[i].dx - norm/Control::rectangles[i].mass;
+						Control::rectangles[k].dx = Control::rectangles[k].dx + norm/Control::rectangles[k].mass;
 					} else {
-						Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx + norm/Engine2d::Control::rectangles[i].mass;
-						Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx - norm/Engine2d::Control::rectangles[k].mass;
+						Control::rectangles[i].dx = Control::rectangles[i].dx + norm/Control::rectangles[i].mass;
+						Control::rectangles[k].dx = Control::rectangles[k].dx - norm/Control::rectangles[k].mass;
 					}
-					// Engine2d::Control::rectangles[i].dx = Engine2d::Control::rectangles[i].dx + norm/Engine2d::Control::rectangles[i].mass;
-					// Engine2d::Control::rectangles[k].dx = Engine2d::Control::rectangles[k].dx - norm/Engine2d::Control::rectangles[k].mass;
-					// Engine2d::Control::rectangles[k].dx.x = Engine2d::Control::rectangles[k].dx.x + 10;
-					// Engine2d::Control::rectangles[k].dx.y = Engine2d::Control::rectangles[k].dx.y + 10;
-					// Engine2d::Control::rectangles[i].dx.x = Engine2d::Control::rectangles[i].dx.x - 5;
-					// Engine2d::Control::rectangles[i].dx.y = Engine2d::Control::rectangles[i].dx.y - 5;
-					// std::cout << norm.x << " " << norm.y << "\n";
 					// Backtrack every object's position by -velocity*fraction --> probably ?? or not??
-					// for (int j = 0; j < Engine2d::Control::rectangles.size(); ++j) {
-					// 	if (&Engine2d::Control::rectangles[j] != &Engine2d::Control::rectangles[i] &&
-					// 		&Engine2d::Control::rectangles[j] != &Engine2d::Control::rectangles[k]) {
-					// 		Engine2d::Control::rectangles[j].position = Engine2d::Control::rectangles[j].position - fraction * Engine2d::Control::rectangles[j].dx;
+					// for (int j = 0; j < Control::rectangles.size(); ++j) {
+					// 	if (&Control::rectangles[j] != &Control::rectangles[i] &&
+					// 		&Control::rectangles[j] != &Control::rectangles[k]) {
+					// 		Control::rectangles[j].position = Control::rectangles[j].position - fraction * Control::rectangles[j].dx;
 					// 	}
 					// }
 					i = -1;
@@ -97,13 +90,13 @@ namespace Engine2d {
 	}
 
 	void Control::drawAll() {
-		for (int i = 0; i < Engine2d::Control::rectId; ++i)
+		for (int i = 0; i < Control::rectId; ++i)
 			rectangles[i].draw();
 
 		#if DEBUG == 1
-			for (int i = 0; i < Engine2d::Control::dbgCircleId; ++i)
+			for (int i = 0; i < Control::dbgCircleId; ++i)
 				debugCircles[i].draw();
-			for (int i = 0; i < Engine2d::Control::dbgLineId; ++i)
+			for (int i = 0; i < Control::dbgLineId; ++i)
 				debugLines[i].draw();
 		#endif
 	}
@@ -112,18 +105,18 @@ namespace Engine2d {
 	#if DEBUG == 1
 		DebugCircle* Control::createObject(DebugCircle dbgCircle) {
 			if (dbgCircle.name == "")
-				dbgCircle.name = std::string("dbgCircle_") + std::to_string(Engine2d::Control::dbgCircleId);
-			Engine2d::Control::debugCircles[dbgCircleId] = dbgCircle;
-			++Engine2d::Control::dbgCircleId;
-			return &Engine2d::Control::debugCircles[dbgCircleId-1];
+				dbgCircle.name = std::string("dbgCircle_") + std::to_string(Control::dbgCircleId);
+			Control::debugCircles[dbgCircleId] = dbgCircle;
+			++Control::dbgCircleId;
+			return &Control::debugCircles[dbgCircleId-1];
 		}
 
 		DebugLine* Control::createObject(DebugLine dbgLine) {
 			if (dbgLine.name == "")
-				dbgLine.name = std::string("dbgLine_") + std::to_string(Engine2d::Control::dbgLineId);
-			Engine2d::Control::debugLines[dbgLineId] = dbgLine;
-			++Engine2d::Control::dbgLineId;
-			return &Engine2d::Control::debugLines[dbgLineId-1];
+				dbgLine.name = std::string("dbgLine_") + std::to_string(Control::dbgLineId);
+			Control::debugLines[dbgLineId] = dbgLine;
+			++Control::dbgLineId;
+			return &Control::debugLines[dbgLineId-1];
 		}
 	#endif
 }

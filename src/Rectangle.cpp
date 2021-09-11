@@ -24,7 +24,7 @@ namespace Engine2d {
 		this->isStatic = isStatic;
 		this->mass = mass;
 		this->invMass = 1/mass;
-		this->restitution = restitution;
+		this->restitution = (restitution < 2.5 ? 2.5 : restitution); // Min limit of 2.5 to prevent weird stuff
 		this->name = name;
 		this->collision = false;
 	}
